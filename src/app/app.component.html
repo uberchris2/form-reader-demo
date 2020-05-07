@@ -2,7 +2,6 @@
   <h1>
     Azure Form Reader Demo
   </h1>
-
   <div class="card">
     <div class="card-header">
       Step 1: Upload a PDF
@@ -11,15 +10,15 @@
       <form>
         <div class="form-group">
           <label for="storageAccount">Storage Account</label> 
-          <input id="storageAccount" name="storageAccount" [(ngModel)]="storageAccount" class="form-control" />
+          <input id="storageAccount" name="storageAccount" [(ngModel)]="storageAccount" placeholder="ex. somestorageaccount" class="form-control" />
         </div>
         <div class="form-group">
           <label for="sasToken">SAS Token</label> 
-          <input id="sasToken" name="sasToken" [(ngModel)]="sasToken" class="form-control" />
+          <input id="sasToken" name="sasToken" [(ngModel)]="sasToken" placeholder="ex. ?sv=2019-10-10&ss=b&srt=sco&sp=rwdlac..." class="form-control" />
         </div>
         <div class="form-group">
           <label for="storageContainer">Storage Container</label> 
-          <input id="storageContainer" name="storageContainer" [(ngModel)]="storageContainer" class="form-control" />
+          <input id="storageContainer" name="storageContainer" [(ngModel)]="storageContainer" placeholder="ex. documents" class="form-control" />
         </div>
         <div class="form-group">
           <label for="sasToken">PDF to upload</label> 
@@ -29,16 +28,56 @@
           <button type="submit" class="btn btn-primary" (click)="uploadFile()">Upload</button>
         </div>
       </form>
-      <div class="alert alert-success" *ngIf="fileUri != null">
-        Upload succeeded. Blob: <a href="{{fileUri}}">{{fileUri}}</a>
+      <div class="alert alert-success" *ngIf="uploadedFileUri != null">
+        <a href="{{uploadedFileUri}}">{{uploadedFileUri}}</a>
       </div>
     </div>
   </div>
-
-
-
-
-
-
+  <div class="card">
+    <div class="card-header">
+      Step 2: Train a model
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="form-group">
+          <label for="inputFileUri">PDF URI</label> 
+          <input id="inputFileUri" name="inputFileUri" [(ngModel)]="inputFileUri" placeholder="ex. example-recognizer" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="recognizerKey">Form Recognizer Subscription Key</label> 
+          <input id="recognizerKey" name="recognizerKey" [(ngModel)]="recognizerKey" placeholder="ex. 7467532a1f541053b28d55d854b7e13b" class="form-control" />
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" (click)="trainModel()">Train</button>
+        </div>
+      </form>
+      <div class="alert alert-success" *ngIf="trainedModelId != null">
+        Model trained. Id: {{trainedModelId}}
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      Step 3: View trained model
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="form-group">
+          <label for="inputModelId">Model ID</label> 
+          <input id="inputModelId" name="inputModelId" [(ngModel)]="inputModelId" placeholder="ex. c62c0b65-f6cd-4d2f-a4a4-afe143a8f0c0" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="recognizerKey">Form Recognizer Subscription Key</label> 
+          <input id="recognizerKey" name="recognizerKey" [(ngModel)]="recognizerKey" placeholder="ex. 7467532a1f541053b28d55d854b7e13b" class="form-control" />
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" (click)="viewModel()">View</button>
+        </div>
+      </form>
+      <div class="alert alert-success" *ngIf="resultModel != null">
+        {{resultModel | json}}
+      </div>
+    </div>
+  </div>
 
 </div>

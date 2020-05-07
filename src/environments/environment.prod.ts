@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  cognitiveServiceProxy: "https://cognitive-service-proxy.azurewebsites.net/"
 };
