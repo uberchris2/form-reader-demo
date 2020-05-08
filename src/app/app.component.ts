@@ -15,8 +15,8 @@ export class AppComponent {
   storageAccount: string;
   sasToken: string;
   storageContainer: string;
-  file: File;
-  uploadedFileUri: string;
+  fileList: FileList;
+  filesUploaded: number;
   uploading: boolean = false;
   //step 2 fields
   inputBucketUri: string;
@@ -35,8 +35,7 @@ export class AppComponent {
   constructor(private http: HttpClient) { }
 
   selectFile(event) {
-    const fileList: FileList = event.target.files;
-    this.file = fileList[0];
+    this.fileList = event.target.files;
   }
 
   async uploadFile() {
@@ -45,11 +44,13 @@ export class AppComponent {
       `https://${this.storageAccount}.blob.core.windows.net${this.sasToken}`
     );
     const containerClient = blobServiceClient.getContainerClient(this.storageContainer);
-    const blockBlobClient = containerClient.getBlockBlobClient(this.file.name);
-    const options: BlockBlobParallelUploadOptions = { blobHTTPHeaders: { blobContentType: this.file.type } };
-    await blockBlobClient.uploadBrowserData(this.file, options);
+    for (var i = 0; i < this.fileList.length; i++) {
+      const blockBlobClient = containerClient.getBlockBlobClient(this.fileList[i].name);
+      const options: BlockBlobParallelUploadOptions = { blobHTTPHeaders: { blobContentType: this.fileList[i].type } };
+      await blockBlobClient.uploadBrowserData(this.fileList[i], options);
+    }
     this.uploading = false;
-    this.uploadedFileUri = `https://${this.storageAccount}.blob.core.windows.net/${this.storageContainer}/${this.file.name}${this.sasToken}`;
+    this.filesUploaded = this.fileList.length;
     this.inputBucketUri = `https://${this.storageAccount}.blob.core.windows.net/${this.storageContainer}/${this.sasToken}`;
   }
 

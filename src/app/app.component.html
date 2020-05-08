@@ -4,7 +4,7 @@
   </h1>
   <div class="card">
     <div class="card-header">
-      Step 1: Upload a PDF
+      Step 1: Upload PDFs (typically minimum 5)
     </div>
     <div class="card-body">
       <form>
@@ -21,15 +21,15 @@
           <input id="storageContainer" name="storageContainer" [(ngModel)]="storageContainer" placeholder="ex. documents" class="form-control" />
         </div>
         <div class="form-group">
-          <label for="file">PDF to upload</label> 
-          <input type="file" id="file" (change)="selectFile($event)" class="form-control-file" accept=".pdf" />
+          <label for="file">PDFs to upload</label> 
+          <input type="file" id="file" (change)="selectFile($event)" class="form-control-file" accept=".pdf" multiple="multiple" />
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-primary" (click)="uploadFile()">Upload</button>
         </div>
       </form>
-      <div class="alert alert-success" *ngIf="uploadedFileUri != null">
-        Upload successful: <a href="{{uploadedFileUri}}">{{uploadedFileUri}}</a><br />
+      <div class="alert alert-success" *ngIf="filesUploaded != null">
+        Uploaded {{filesUploaded}} PDF(s).<br />
       </div>
       <div class="alert alert-info" *ngIf="uploading">
         Uploading...
@@ -43,8 +43,8 @@
     <div class="card-body">
       <form>
         <div class="form-group">
-          <label for="inputBucketUri">Bucket URI</label> 
-          <input id="inputBucketUri" name="inputBucketUri" [(ngModel)]="inputBucketUri" placeholder="ex. https://ACCOUNT.blob.core.windows.net/documents/" class="form-control" />
+          <label for="inputBucketUri">Container URI (including SAS token)</label> 
+          <input id="inputBucketUri" name="inputBucketUri" [(ngModel)]="inputBucketUri" placeholder="ex. https://ACCOUNT.blob.core.windows.net/documents/?sv=2019-10-10&ss=b..." class="form-control" />
         </div>
         <div class="form-group">
           <label for="recognizerKey">Form Recognizer Subscription Key</label> 
@@ -81,7 +81,7 @@
         </div>
       </form>
       <div class="alert alert-success" *ngIf="resultModel != null">
-        {{resultModel | json}}
+        <pre>{{resultModel | json}}</pre>
       </div>
       <div class="alert alert-info" *ngIf="viewing">
         Viewing...
@@ -111,7 +111,7 @@
         </div>
       </form>
       <div class="alert alert-success" *ngIf="resultForm != null">
-        {{resultForm | json}}
+        <pre>{{resultForm | json}}</pre>
       </div>
       <div class="alert alert-info" *ngIf="reading">
         Reading...
