@@ -17,13 +17,20 @@ export class AppComponent {
   storageContainer: string;
   file: File;
   uploadedFileUri: string;
+  uploading: boolean = false;
   //step 2 fields
-  inputFileUri: string;
+  inputBucketUri: string;
   recognizerKey: string;
   trainedModelId: string;
+  training: boolean = false;
   //step 3 fields
   inputModelId: string;
   resultModel: object;
+  viewing: boolean = false;
+  //setp 4 fields
+  form: File;
+  resultForm: object;
+  reading: boolean = false;
 
   constructor(private http: HttpClient) { }
 
@@ -33,6 +40,7 @@ export class AppComponent {
   }
 
   async uploadFile() {
+    this.uploading = true;
     const blobServiceClient = new BlobServiceClient(
       `https://${this.storageAccount}.blob.core.windows.net${this.sasToken}`
     );
@@ -40,29 +48,54 @@ export class AppComponent {
     const blockBlobClient = containerClient.getBlockBlobClient(this.file.name);
     const options: BlockBlobParallelUploadOptions = { blobHTTPHeaders: { blobContentType: this.file.type } };
     await blockBlobClient.uploadBrowserData(this.file, options);
+    this.uploading = false;
     this.uploadedFileUri = `https://${this.storageAccount}.blob.core.windows.net/${this.storageContainer}/${this.file.name}${this.sasToken}`;
-    this.inputFileUri = this.uploadedFileUri;
+    this.inputBucketUri = `https://${this.storageAccount}.blob.core.windows.net/${this.storageContainer}/${this.sasToken}`;
   }
 
   trainModel() {
-    const body = { source: this.inputFileUri };
+    this.training = true;
+    const body = { source: this.inputBucketUri };
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': this.recognizerKey })
     }
     this.http.post<TrainResponse>(`${environment.cognitiveServiceProxy}train`, body, httpOptions)
       .subscribe(response => {
+        this.training = false;
         this.trainedModelId = response.modelId;
         this.inputModelId = this.trainedModelId;
       });
   }
 
   viewModel() {
+    this.viewing = true;
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': this.recognizerKey })
     }
     this.http.get(`${environment.cognitiveServiceProxy}models/${this.inputModelId}/keys`, httpOptions)
       .subscribe(response => {
+        this.viewing = false;
         this.resultModel = response;
+      });
+  }
+
+  selectForm(event) {
+    const fileList: FileList = event.target.files;
+    this.form = fileList[0];
+  }
+
+  readForm() {
+    this.reading = true;
+    let formData: FormData = new FormData(); 
+    formData.append('form', this.form); 
+    formData.append('type', 'application/pdf');
+    const httpOptions = {
+      headers: new HttpHeaders({  'Ocp-Apim-Subscription-Key': this.recognizerKey })
+    }
+    this.http.post(`${environment.cognitiveServiceProxy}models/${this.inputModelId}/analyze`, formData, httpOptions)
+      .subscribe(response => {
+        this.reading = false;
+        this.resultForm = response;
       });
   }
 }

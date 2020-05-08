@@ -21,7 +21,7 @@
           <input id="storageContainer" name="storageContainer" [(ngModel)]="storageContainer" placeholder="ex. documents" class="form-control" />
         </div>
         <div class="form-group">
-          <label for="sasToken">PDF to upload</label> 
+          <label for="file">PDF to upload</label> 
           <input type="file" id="file" (change)="selectFile($event)" class="form-control-file" accept=".pdf" />
         </div>
         <div class="form-group">
@@ -29,7 +29,10 @@
         </div>
       </form>
       <div class="alert alert-success" *ngIf="uploadedFileUri != null">
-        <a href="{{uploadedFileUri}}">{{uploadedFileUri}}</a>
+        Upload successful: <a href="{{uploadedFileUri}}">{{uploadedFileUri}}</a><br />
+      </div>
+      <div class="alert alert-info" *ngIf="uploading">
+        Uploading...
       </div>
     </div>
   </div>
@@ -40,8 +43,8 @@
     <div class="card-body">
       <form>
         <div class="form-group">
-          <label for="inputFileUri">PDF URI</label> 
-          <input id="inputFileUri" name="inputFileUri" [(ngModel)]="inputFileUri" placeholder="ex. example-recognizer" class="form-control" />
+          <label for="inputBucketUri">Bucket URI</label> 
+          <input id="inputBucketUri" name="inputBucketUri" [(ngModel)]="inputBucketUri" placeholder="ex. https://ACCOUNT.blob.core.windows.net/documents/" class="form-control" />
         </div>
         <div class="form-group">
           <label for="recognizerKey">Form Recognizer Subscription Key</label> 
@@ -53,6 +56,9 @@
       </form>
       <div class="alert alert-success" *ngIf="trainedModelId != null">
         Model trained. Id: {{trainedModelId}}
+      </div>
+      <div class="alert alert-info" *ngIf="training">
+        Training...
       </div>
     </div>
   </div>
@@ -76,6 +82,39 @@
       </form>
       <div class="alert alert-success" *ngIf="resultModel != null">
         {{resultModel | json}}
+      </div>
+      <div class="alert alert-info" *ngIf="viewing">
+        Viewing...
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      Step 4: Read form
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="form-group">
+          <label for="form">Form PDF</label> 
+          <input type="file" id="form" (change)="selectForm($event)" class="form-control-file" accept=".pdf" />
+        </div>
+        <div class="form-group">
+          <label for="inputModelId">Model ID</label> 
+          <input id="inputModelId" name="inputModelId" [(ngModel)]="inputModelId" placeholder="ex. c62c0b65-f6cd-4d2f-a4a4-afe143a8f0c0" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="recognizerKey">Form Recognizer Subscription Key</label> 
+          <input id="recognizerKey" name="recognizerKey" [(ngModel)]="recognizerKey" placeholder="ex. 7467532a1f541053b28d55d854b7e13b" class="form-control" />
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" (click)="readForm()">Read</button>
+        </div>
+      </form>
+      <div class="alert alert-success" *ngIf="resultForm != null">
+        {{resultForm | json}}
+      </div>
+      <div class="alert alert-info" *ngIf="reading">
+        Reading...
       </div>
     </div>
   </div>
