@@ -1,0 +1,12 @@
+{
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "form-recognizer": {
+            "matchCondition": {
+                "route": "/{*recognizer-api-call}"
+            },
+            "backendUri": "https://osu-demo-fr.cognitiveservices.azure.com/formrecognizer/v1.0-preview/custom/{recognizer-api-call}",
+            "debug": true
+        }
+    }
+}

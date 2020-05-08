@@ -1,0 +1,20 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "WEBSITE_SLOT_NAME": "Production",
+    "FUNCTIONS_EXTENSION_VERSION": "~3",
+    "ScmType": "None",
+    "WEBSITE_AUTH_ENABLED": "False",
+    "REMOTEDEBUGGINGVERSION": "16.0.28729.10",
+    "FUNCTIONS_RUNTIME_SCALE_MONITORING_ENABLED": "0",
+    "AZURE_FUNCTION_PROXY_BACKEND_URL_DECODE_SLASHES": "true",
+    "WEBSITE_NODE_DEFAULT_VERSION": "12.15.0",
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=osedemoproxysa;AccountKey=0c1mr1uBIrHcIxpc8VFgjq9bxetPYCZQc8P7c83ZfqZD6Ql/TubbNBJSoqnmfCilXXGDiVv49RKFsYI/3Ju3aQ==;EndpointSuffix=core.windows.net",
+    "WEBSITE_CONTENTSHARE": "cognitive-service-proxyb18c",
+    "WEBSITE_AUTH_AUTO_AAD": "False",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "WEBSITE_SITE_NAME": "cognitive-service-proxy",
+    "WEBSITE_AUTH_LOGOUT_PATH": "/.auth/logout",
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=osedemoproxysa;AccountKey=0c1mr1uBIrHcIxpc8VFgjq9bxetPYCZQc8P7c83ZfqZD6Ql/TubbNBJSoqnmfCilXXGDiVv49RKFsYI/3Ju3aQ==;EndpointSuffix=core.windows.net"
+  }
+}
